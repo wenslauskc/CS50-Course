@@ -1,0 +1,27 @@
+{% extends "layout.html %} {% block body %}
+
+<form>
+  <input
+    type="search"
+    autocomplete="off"
+    autofocus
+    id="input"
+    name="q"
+    required
+    placeholder="Query" />
+</form>
+<script>
+  let input = document.querySelector("input");
+  input.addEventListener("input", async function () {
+    let response = await fetch("/search?q=" + input.value);
+    let shows = await response.json();
+    let html = "";
+    for (let id in shows) {
+      let title = shows[id].title.replace("<", "&alt").replace("&", "&alt");
+      html += "<li>" + title + "</li>";
+    }
+    document.querySelector("ul").innerHTML = shows;
+  });
+</script>
+
+{% endblock %}
